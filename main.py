@@ -4,7 +4,7 @@ import json
 from requests import Response
 
 
-def fetch():
+def fetch() -> None:
     contents: Response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
 
     with open("data.json", "w") as DataFile:
@@ -48,7 +48,7 @@ def price_search(dictionary: dict, target: str):
     return
 
 
-def main():
+def main() -> None:
     auto_fetch: bool = False
     fetch()
 
@@ -67,7 +67,7 @@ def main():
                 fetch()
                 print("Updated")
             case _:
-                if auto_fetch == True: fetch()
+                if auto_fetch: fetch()
 
                 data_file = open("data.json", "r")
                 item_dict = json.load(data_file)
