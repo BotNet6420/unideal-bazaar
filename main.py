@@ -61,9 +61,9 @@ def main() -> None:
 
     while True:
         print("Options:     AutoFetch     Update     Item Id     Exit")
-        i: str = input()
+        input_string: str = input()
 
-        match i.lower():
+        match input_string.lower():
             case "exit":
                 print("Exited")
                 break
@@ -79,8 +79,7 @@ def main() -> None:
                 data_file = open("data.json", "r")
                 item_dict = json.load(data_file)
 
-                # TODO: function call missing parameters
-                price_search()
+                price_search(item_dict, input_string)
     return
 
 if __name__ == "__main__":
