@@ -15,35 +15,38 @@ def fetch() -> dict:
     return id_price_dict
 
 
-def id_search(match_list: list, target: str) -> list:
+def find_matches(key_list: list, target: str) -> list:
 
-    i = 0
+    input_list: list = key_list.copy()
+    match_list: list = []
 
-    # TODO: Missing return on some paths (e.g. exiting loop)
-    for char in target:
-        if match_list[i] != char:
-            match_list.pop(i)
-        else:
-            i += 1
-    return match_list
+    for i in range(len(target)):
+        for key in input_list:
+            if len(key) < len(target):
+                continue
+
+            if key[i] == target[i]:
+                match_list.append(key)
+        input_list = match_list
+        match_list = []
+
+    return input_list
 
 
-# TODO: parameter name "list" shadows built-in type
-#   types not specified
-#   define return type
-def find_closest_match(list, target):
+def weighted_strcmp(key_list: list, target: str) -> str:
     ...
 
 def get_price(dictionary: dict, target: str) -> None:
-    match_list: list = id_search(list(dictionary.keys()), target)
+    key_list: list = list(dictionary.keys())
+    match_list: list = find_matches(key_list, target)
 
     match len(match_list):
         case 1:
-            print(dictionary[target])
+            print(dictionary[match_list[0]])
         case 0:
-            print("No Item Found")
+            print("Item not found did you mean" + weighted_strcmp(key_list, target) + "?")
         case _:
-            find_closest_match(match_list, target)
+            print(match_list)
     return None
 
 
