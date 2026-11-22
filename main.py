@@ -41,8 +41,7 @@ def id_search(dictionary: dict, target: str):
 def find_closest_match(list, target):
     ...
 
-# TODO: define return type
-def price_search(dictionary: dict, target: str):
+def price_search(dictionary: dict, target: str) -> None:
     match_list = id_search(dictionary["products"], target)
     
     match len(match_list):
@@ -52,7 +51,7 @@ def price_search(dictionary: dict, target: str):
             print("No Item Found")
         case _:
             find_closest_match(match_list, target)
-    return
+    return None
 
 
 def main() -> None:
