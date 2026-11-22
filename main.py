@@ -23,7 +23,7 @@ def id_search(dictionary: dict, target: str):
     #   - Modifying this could result in the modification of the original dictionary
     #   1. Wrap the left side in "list(...)" constructor
     #   2. Define variable type
-    key_list = dictionary.keys()
+    key_list: list = list(dictionary.keys())
     i = 0
 
     # TODO: Missing return on some paths (e.g. exiting loop)
@@ -32,12 +32,7 @@ def id_search(dictionary: dict, target: str):
             key_list.pop(i)
         else:
             i += 1
-        
-        if len(key_list) == 1:
-            return key_list[0]
-
-        if len(key_list) == 0:
-            return None
+    return key_list
 
 
 # TODO: parameter name "list" shadows built-in type
@@ -48,7 +43,6 @@ def find_closest_match(list, target):
 
 # TODO: define return type
 def price_search(dictionary: dict, target: str):
-    match_list = id_search(dictionary["products"], target)
     match_list = id_search(dictionary["products"], target)
     
     match len(match_list):
@@ -87,4 +81,7 @@ def main() -> None:
 
                 # TODO: function call missing parameters
                 price_search()
+    return
 
+if __name__ == "__main__":
+    main()
