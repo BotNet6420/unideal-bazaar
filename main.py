@@ -1,8 +1,11 @@
 import requests
 import json
 
+from requests import Response
+
+
 def fetch():
-    contents = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
+    contents: Response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
 
     with open("data.json", "w") as DataFile:
         json.dump(contents.json(), DataFile)
@@ -10,7 +13,7 @@ def fetch():
     return
 
 
-def id_search(dictionary, target):
+def id_search(dictionary: dict, target: str):
     key_list = dictionary.keys()
     i = 0
 
@@ -31,7 +34,7 @@ def find_closest_match(list, target):
     ...
 
 
-def price_search(dictionary, target):
+def price_search(dictionary: dict, target: str):
     match_list = id_search(dictionary["products"], target)
     match_list = id_search(dictionary["products"], target)
     
@@ -46,12 +49,12 @@ def price_search(dictionary, target):
 
 
 def main():
-    auto_fetch = False
+    auto_fetch: bool = False
     fetch()
 
     while True:
         print("Options:     AutoFetch     Update     Item Id     Exit")
-        i = input()
+        i: str = input()
 
         match i.lower():
             case "exit":
@@ -59,7 +62,7 @@ def main():
                 break
             case "autofetch":
                 auto_fetch = not auto_fetch
-                print("AutoFetch: " + auto_fetch)
+                print("AutoFetch: " + str(auto_fetch))
             case "update":
                 fetch()
                 print("Updated")
