@@ -1,53 +1,53 @@
 import requests
 import json
 
-def Fetch():
-    Contents = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
+def fetch():
+    contents = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
 
     with open("data.json", "w") as DataFile:
-        json.dump(Contents.json(), DataFile)
+        json.dump(contents.json(), DataFile)
     
     return
 
 
-def IdSearch(Dictionary, Target):
-    KeyList = Dictionary.keys()
+def id_search(dictionary, target):
+    key_list = dictionary.keys()
     i = 0
 
-    for char in Target:
-        if KeyList[i] != char:
-            KeyList.pop(i)
+    for char in target:
+        if key_list[i] != char:
+            key_list.pop(i)
         else:
             i += 1
         
-        if len(KeyList) == 1:
-            return KeyList[0]
+        if len(key_list) == 1:
+            return key_list[0]
 
-        if len(KeyList) == 0:
+        if len(key_list) == 0:
             return None
 
 
-def FindClosestMatch(List, Target):
+def find_closest_match(list, target):
     ...
 
 
-def PriceSearch(Dictionary, Target):
-    MatchList = IdSearch(Dictionary["products"], Target)
-    MatchList = IdSearch(Dictionary["products"], Target)
+def price_search(dictionary, target):
+    match_list = id_search(dictionary["products"], target)
+    match_list = id_search(dictionary["products"], target)
     
-    match len(MatchList):
+    match len(match_list):
         case 1:
-            print(Dictionary["products"][MatchList[0]]["quick_status"]["buyPrice"])
+            print(dictionary["products"][match_list[0]]["quick_status"]["buyPrice"])
         case 0:
             print("No Item Found")
         case _:
-            FindClosestMatch(MatchList, Target)
+            find_closest_match(match_list, target)
     return
 
 
 def main():
-    AutoFetch = False
-    Fetch()
+    auto_fetch = False
+    fetch()
 
     while True:
         print("Options:     AutoFetch     Update     Item Id     Exit")
@@ -58,16 +58,16 @@ def main():
                 print("Exited")
                 break
             case "autofetch":
-                AutoFetch = not AutoFetch
-                print("AutoFetch: " + AutoFetch)
+                auto_fetch = not auto_fetch
+                print("AutoFetch: " + auto_fetch)
             case "update":
-                Fetch()
+                fetch()
                 print("Updated")
             case _:
-                if AutoFetch == True: Fetch()
+                if auto_fetch == True: fetch()
 
-                DataFile = open("data.json", "r")
-                ItemDict = json.load(DataFile)
+                data_file = open("data.json", "r")
+                item_dict = json.load(data_file)
 
-                PriceSearch()
+                price_search()
 
