@@ -4,13 +4,15 @@ import json
 from requests import Response
 
 
-def fetch() -> None:
+def fetch() -> dict:
     contents: Response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
+    raw_dictionary: dict = contents.json()["products"]
 
-    with open("data.json", "w") as DataFile:
-        json.dump(contents.json(), DataFile)
-    
-    return
+    temporary_list = list()
+    for item in raw_dictionary.values():
+        temporary_list.append(item["quick_status"]["buyPrice"])
+
+    return dict(zip(raw_dictionary.keys(), temporary_list))
 
 
 # TODO: define return type
@@ -42,7 +44,7 @@ def find_closest_match(list, target):
     ...
 
 def price_search(dictionary: dict, target: str) -> None:
-    match_list = id_search(dictionary["products"], target)
+    match_list = id_search(dictionary, target)
     
     match len(match_list):
         case 1:
@@ -56,7 +58,7 @@ def price_search(dictionary: dict, target: str) -> None:
 
 def main() -> None:
     auto_fetch: bool = False
-    fetch()
+    item_dict = fetch()
 
     while True:
         print("Options:     AutoFetch     Update     Item Id     Exit")
@@ -75,8 +77,6 @@ def main() -> None:
             case _:
                 if auto_fetch: fetch()
 
-                data_file = open("data.json", "r")
-                item_dict = json.load(data_file)
 
                 price_search(item_dict, input_string)
     return
