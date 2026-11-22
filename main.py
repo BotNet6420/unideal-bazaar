@@ -8,33 +8,24 @@ def fetch() -> dict:
     contents: Response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
     raw_dictionary: dict = contents.json()["products"]
 
-    temporary_list = list()
-    for item in raw_dictionary.values():
-        temporary_list.append(item["quick_status"]["buyPrice"])
+    id_price_dict: dict = {}
+    for item in raw_dictionary.keys():
+        id_price_dict[item] = raw_dictionary[item]["quick_status"]["buyPrice"]
 
-    return dict(zip(raw_dictionary.keys(), temporary_list))
+    return id_price_dict
 
 
-# TODO: define return type
-def id_search(dictionary: dict, target: str):
-    # TODO:
-    #   The blow type is "dict_keys" which is a "view" of the original dictionary
-    #   Does not behave like a normal list:
-    #   - Deos not define bracket indexing via "[]"
-    #   - Does not define a "pop" method
-    #   - Modifying this could result in the modification of the original dictionary
-    #   1. Wrap the left side in "list(...)" constructor
-    #   2. Define variable type
-    key_list: list = list(dictionary.keys())
+def id_search(match_list: list, target: str) -> list:
+
     i = 0
 
     # TODO: Missing return on some paths (e.g. exiting loop)
     for char in target:
-        if key_list[i] != char:
-            key_list.pop(i)
+        if match_list[i] != char:
+            match_list.pop(i)
         else:
             i += 1
-    return key_list
+    return match_list
 
 
 # TODO: parameter name "list" shadows built-in type
@@ -43,12 +34,12 @@ def id_search(dictionary: dict, target: str):
 def find_closest_match(list, target):
     ...
 
-def price_search(dictionary: dict, target: str) -> None:
-    match_list = id_search(dictionary, target)
-    
+def get_price(dictionary: dict, target: str) -> None:
+    match_list: list = id_search(list(dictionary.keys()), target)
+
     match len(match_list):
         case 1:
-            print(dictionary["products"][match_list[0]]["quick_status"]["buyPrice"])
+            print(dictionary[target])
         case 0:
             print("No Item Found")
         case _:
@@ -77,8 +68,7 @@ def main() -> None:
             case _:
                 if auto_fetch: fetch()
 
-
-                price_search(item_dict, input_string)
+                get_price(item_dict, input_string)
     return
 
 if __name__ == "__main__":
