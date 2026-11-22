@@ -13,10 +13,20 @@ def fetch() -> None:
     return
 
 
+# TODO: define return type
 def id_search(dictionary: dict, target: str):
+    # TODO:
+    #   The blow type is "dict_keys" which is a "view" of the original dictionary
+    #   Does not behave like a normal list:
+    #   - Deos not define bracket indexing via "[]"
+    #   - Does not define a "pop" method
+    #   - Modifying this could result in the modification of the original dictionary
+    #   1. Wrap the left side in "list(...)" constructor
+    #   2. Define variable type
     key_list = dictionary.keys()
     i = 0
 
+    # TODO: Missing return on some paths (e.g. exiting loop)
     for char in target:
         if key_list[i] != char:
             key_list.pop(i)
@@ -30,10 +40,13 @@ def id_search(dictionary: dict, target: str):
             return None
 
 
+# TODO: parameter name "list" shadows built-in type
+#   types not specified
+#   define return type
 def find_closest_match(list, target):
     ...
 
-
+# TODO: define return type
 def price_search(dictionary: dict, target: str):
     match_list = id_search(dictionary["products"], target)
     match_list = id_search(dictionary["products"], target)
@@ -72,5 +85,6 @@ def main() -> None:
                 data_file = open("data.json", "r")
                 item_dict = json.load(data_file)
 
+                # TODO: function call missing parameters
                 price_search()
 
