@@ -1,93 +1,90 @@
 import requests
 import json
 
-def Fetch():
+from requests import Response
 
-    Contents = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
+
+def fetch() -> None:
+    contents: Response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
 
     with open("data.json", "w") as DataFile:
-        json.dump(Contents.json(), DataFile)
+        json.dump(contents.json(), DataFile)
     
     return
 
-def IdSearch(Dictionary, Target):
 
-    KeyList = Dictionary.keys()
-
+# TODO: define return type
+def id_search(dictionary: dict, target: str):
+    # TODO:
+    #   The blow type is "dict_keys" which is a "view" of the original dictionary
+    #   Does not behave like a normal list:
+    #   - Deos not define bracket indexing via "[]"
+    #   - Does not define a "pop" method
+    #   - Modifying this could result in the modification of the original dictionary
+    #   1. Wrap the left side in "list(...)" constructor
+    #   2. Define variable type
+    key_list = dictionary.keys()
     i = 0
-    for char in Target:
 
-        if KeyList[i] != char: 
-    
-            KeyList.pop(i)
-        else: 
-            
+    # TODO: Missing return on some paths (e.g. exiting loop)
+    for char in target:
+        if key_list[i] != char:
+            key_list.pop(i)
+        else:
             i += 1
         
-        if len(KeyList) == 1: 
-          
-            return KeyList[0]
-        if len(KeyList) == 0:
+        if len(key_list) == 1:
+            return key_list[0]
 
+        if len(key_list) == 0:
             return None
 
-def FindClosestMatch(List, Target):
+
+# TODO: parameter name "list" shadows built-in type
+#   types not specified
+#   define return type
+def find_closest_match(list, target):
     ...
 
-
-
-def PriceSearch(Dictionary, Target):
+# TODO: define return type
+def price_search(dictionary: dict, target: str):
+    match_list = id_search(dictionary["products"], target)
+    match_list = id_search(dictionary["products"], target)
     
-    MatchList = IdSearch(Dictionary["products"], Target)
-
-    
-    MatchList = IdSearch(Dictionary["products"], Target)
-    
-    match len(MatchList): 
-      
+    match len(match_list):
         case 1:
-            
-            print(Dictionary["products"][MatchList[0]]["quick_status"]["buyPrice"])
+            print(dictionary["products"][match_list[0]]["quick_status"]["buyPrice"])
         case 0:
-
             print("No Item Found")
         case _:
-
-            FindClosestMatch(MatchList, Target)
-
+            find_closest_match(match_list, target)
     return
 
-def main():
 
-    AutoFetch = False
-
-    Fetch()
+def main() -> None:
+    auto_fetch: bool = False
+    fetch()
 
     while True:
-
         print("Options:     AutoFetch     Update     Item Id     Exit")
-        i = input()
+        i: str = input()
 
         match i.lower():
-
             case "exit":
-
                 print("Exited")
                 break
             case "autofetch":
-
-                AutoFetch = not AutoFetch
-                print("AutoFetch: " + AutoFetch)
+                auto_fetch = not auto_fetch
+                print("AutoFetch: " + str(auto_fetch))
             case "update":
-                
-                Fetch()
+                fetch()
                 print("Updated")
             case _:
+                if auto_fetch: fetch()
 
-                if AutoFetch == True: Fetch()
+                data_file = open("data.json", "r")
+                item_dict = json.load(data_file)
 
-                DataFile = open("data.json", "r")
-                ItemDict = json.load(DataFile)
-
-                PriceSearch()
+                # TODO: function call missing parameters
+                price_search()
 
