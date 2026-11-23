@@ -32,6 +32,44 @@ def find_matches(key_list: list, target: str) -> list:
     return match_list
 
 
+def q_typo_detect(c: str, t: str) -> bool:
+    Q_TYPO_DICT = {
+        "A": "AQWSZ",
+        "B": "BVGHN ",
+        "C": "CXDFV ",
+        "D": "DSERFCX",
+        "E": "E234RDSW",
+        "F": "FDRTGVC",
+        "G": "GFTYHBV",
+        "H": "HGYUJNB",
+        "I": "IU789OKJ",
+        "J": "JHUIKMN",
+        "K": "KJIOL,M",
+        "L": "LKOP;.,",
+        "M": "MNJK, ",
+        "N": "NBHJM ",
+        "O": "OI890PLK",
+        "P": "PO90-[;L",
+        "Q": "Q`12WA",
+        "R": "RE345TFD",
+        "S": "SWEDXZA",
+        "T": "TR456YGF",
+        "U": "UY678IJH",
+        "V": "VCFGB ",
+        "W": "WQ123ESA",
+        "X": "XZSDC ",
+        "Y": "YT567UHG",
+        "Z": "ZASX",
+        "_": "-0P[]="
+    }
+
+    try:
+        if Q_TYPO_DICT[c].find(t) != -1:
+            return True
+        else:
+            return False
+    except(KeyError):
+        return False
 
 
 
@@ -42,12 +80,14 @@ def weighted_cmp(key_list: list, target: str) -> str:
     for key in key_list:
         match_count: int = 0
         
-        for i in range(min(len(key_list), len(target))):
-            if qtypo_detec():
-                count += 1
+        for i in range(min(len(key), len(target))):
+            if key[i] == target[i]:
+                match_count += 1
         
-        if (match_count/len(key)) > top_compatibility:
+        compatibility = match_count/len(key)
+        if ((compatibility > top_compatibility) & (compatibility > 0.7)):
             top_contestant = key
+            top_compatibility = compatibility
 
     return top_contestant
 
@@ -60,9 +100,12 @@ def get_price(dictionary: dict, target: str) -> None:
         case 1:
             print(dictionary[match_list[0]])
         case 0:
-            print("Item not found.\ndid you mean" + weighted_cmp(key_list, target) + "?")
+            print("Item not found") 
+
+            if (tmp := weighted_cmp(key_list, target)) != "":
+                print("Did you mean " + tmp + "?")
         case _:
-            print(match_list)
+            print(*match_list, sep="   ")
     return None
 
 
