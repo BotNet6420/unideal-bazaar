@@ -19,17 +19,22 @@ def find_matches(key_list: list, target: str) -> list:
     match_list: list = key_list.copy()
     tmp_list: list = []
 
-    for i in range(len(target)):
-        for key in match_list:
-            if len(key) < len(target):
-                continue
+    try:
+        key_list.index(target)
+    except ValueError:
+        for i in range(len(target)):
+            for key in match_list:
+                if len(key) < len(target):
+                    continue
 
-            if key[i] == target[i]:
-                tmp_list.append(key)
-        match_list = tmp_list
-        tmp_list = []
+                if key[i] == target[i]:
+                    tmp_list.append(key)
+            match_list = tmp_list
+            tmp_list = []
+        return match_list
 
-    return match_list
+    tmp_list.append(target)
+    return tmp_list
 
 
 def q_typo_detect(c: str, t: str) -> bool:
