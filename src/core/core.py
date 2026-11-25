@@ -14,7 +14,7 @@ def fetch() -> dict:
         print("Error: Unable to connect to Hypixel API")
         raise
     except requests.Timeout:
-        print("Error: Timedout")
+        print("Error: Timeout")
         raise
     except requests.HTTPError:
         print("Error: HTTP Error")
@@ -51,7 +51,7 @@ def find_matches(key_list: list, target: str) -> list:
 
 
 def q_typo_detect(c: str, t: str) -> bool:
-    Q_TYPO_DICT = {
+    q_typo_dict: dict[str , str] = {
         "A": "AQWSZ",
         "B": "BVGHN ",
         "C": "CXDFV ",
@@ -82,11 +82,11 @@ def q_typo_detect(c: str, t: str) -> bool:
     }
 
     try:
-        if Q_TYPO_DICT[c].find(t) != -1:
+        if q_typo_dict[c].find(t) != -1:
             return True
         else:
             return False
-    except(KeyError):
+    except KeyError:
         return False
 
 
@@ -102,7 +102,7 @@ def weighted_cmp(key_list: list, target: str) -> str:
                 match_count += 1
 
         compatibility = match_count/len(key)
-        if ((compatibility > top_compatibility) & (compatibility > 0.7)):
+        if (compatibility > top_compatibility) and (compatibility > 0.7):
             top_contestant = key
             top_compatibility = compatibility
 
