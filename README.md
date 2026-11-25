@@ -6,7 +6,7 @@ Named (appropriately) after observing the prices up in shambles.
 - [x] Fetch the latest prices from the API
 - [x] Search the response for the given key and display the price
 - [x] Handle the response in-memory instead of writing to disk
-- [ ] Add error handling for the network request
+- [x] Add error handling for the network request
 - [x] Implement not-complete but specific-enough pattern matching
 - [x] Implement closest-match suggestion on invalid input
 - [ ] Cache and reuse the received response in short intervals

@@ -1,11 +1,23 @@
 import requests
-
 from requests import Response
 
 
 def fetch() -> dict:
-    contents: Response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
-    raw_dictionary: dict = contents.json()["products"]
+    raw_dictionary: dict = {}
+
+    try:
+        contents: Response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
+        raw_dictionary = contents.json()["products"]
+    except requests.exceptions.ConnectionError:
+        print("Error: Unable to connect to Hypixel API")
+        raise
+    except requests.Timeout:
+        print("Error: Timedout")
+        raise
+    except requests.HTTPError:
+        print("Error: HTTP Error")
+        raise
+    
     id_price_dict: dict = {}
     
     for item in raw_dictionary.keys():
@@ -115,8 +127,12 @@ def get_price(dictionary: dict, target: str) -> None:
 
 def main() -> None:
     auto_fetch: bool = False
-    item_dict = fetch()
-
+    
+    try:
+        item_dict = fetch()
+    except:
+        return
+    
     while True:
         print("Options:     AutoFetch     Update     Item Id     Exit")
         input_string: str = input()
@@ -129,11 +145,17 @@ def main() -> None:
                 auto_fetch = not auto_fetch
                 print("AutoFetch: " + str(auto_fetch))
             case "update":
-                fetch()
+                try:
+                    fetch()
+                except:
+                    return
                 print("Updated")
             case _:
-                if auto_fetch: fetch()
-
+                if auto_fetch: 
+                    try:
+                        fetch()
+                    except:
+                        return
                 get_price(item_dict, input_string.upper())
     return
 
