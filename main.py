@@ -10,11 +10,14 @@ def fetch() -> dict:
         raw_dictionary = contents.json()["products"]
     except requests.exceptions.ConnectionError:
         print("Error: Unable to connect to Hypixel API")
+        raise
     except requests.Timeout:
         print("Error: Timedout")
+        raise
     except requests.HTTPError:
         print("Error: HTTP Error")
-        
+        raise
+    
     id_price_dict: dict = {}
     
     for item in raw_dictionary.keys():
