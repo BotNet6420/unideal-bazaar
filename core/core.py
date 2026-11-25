@@ -1,12 +1,14 @@
 import requests
 from requests import Response
 
+URL = "https://api.hypixel.net/v2/skyblock/bazaar"
+
 
 def fetch() -> dict:
     raw_dictionary: dict = {}
 
     try:
-        contents: Response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
+        contents: Response = requests.get(URL)
         raw_dictionary = contents.json()["products"]
     except requests.exceptions.ConnectionError:
         print("Error: Unable to connect to Hypixel API")
