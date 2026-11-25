@@ -1,5 +1,4 @@
 import requests
-import json
 
 from requests import Response
 
@@ -135,7 +134,7 @@ def main() -> None:
             case _:
                 if auto_fetch: fetch()
 
-                get_price(item_dict, input_string)
+                get_price(item_dict, input_string.upper())
     return
 
 if __name__ == "__main__":
